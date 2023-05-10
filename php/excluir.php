@@ -4,14 +4,14 @@
 include("conexao.php");
 
 //Obter dados
-$obterDados = file_get_contents("php://input");
 
+$url = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
-//Extrair os dados JSON
-$extrair = json_decode($obterDados);
+$params = parse_url($url);
 
-//Separar dados do JSON
-$idCurso = $extrair->cursos->idCurso;//extrair -acesso a abrir json/cursos-nome do json/nomeCursos-característica
+parse_str($params['query'], $query);
+
+$idCurso = $query['idCurso'];
 
 //SQL
 $sql = "DELETE FROM cursos WHERE idCurso=$idCurso";

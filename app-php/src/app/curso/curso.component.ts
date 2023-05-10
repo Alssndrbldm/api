@@ -4,13 +4,14 @@ import { Curso } from './curso';
 import { CursoService } from './curso.service';
 import { map } from 'rxjs';
 
+
 @Component({
   selector: 'app-curso',
   templateUrl: './curso.component.html',
   styleUrls: ['./curso.component.css']
 })
 export class CursoComponent implements OnInit {
-
+ 
   //Vetor de cursos
   vetor: Curso[];
 
@@ -40,8 +41,22 @@ export class CursoComponent implements OnInit {
   }
 
   //Cadastro
-  cadastro(): void {
-    alert("Cadastro");
+  cadastro() {
+    this.curso_servico.cadastrarCurso(this.curso).subscribe(
+      (res: Curso[]) => {
+
+        //Adicionando dados ao vetor
+        this.vetor = res;
+
+        //Limpar os atributos
+        this.curso.nomeCurso = "";
+        this.curso.valorCurso = 0;
+
+        //Atualizar listagem
+        this.selecao();
+      }
+    )
+    
   }
 
   //Alterar
@@ -50,8 +65,27 @@ export class CursoComponent implements OnInit {
   }
 
   //Remover
-  remover(): void {
-    alert("Remover");
+  remover() {
+    this.curso_servico.removerCurso(this.curso).subscribe(
+      () => {
+        this.vetor.forEach((curso, index) => {
+          if (curso.idCurso == this.curso.idCurso) {
+            this.vetor.splice(index, 1)
+          }
+        })
+
+        this.curso.nomeCurso = null;
+        this.curso.valorCurso = null;
+
+      }
+    )
+  }
+
+  //Selecionar curso específico
+  selecionarCurso(c:Curso){
+    this.curso.idCurso = c.idCurso;
+    this.curso.nomeCurso = c.nomeCurso;
+    this.curso.valorCurso = c.valorCurso;
   }
 
 }

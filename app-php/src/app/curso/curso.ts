@@ -3,8 +3,8 @@
 export class Curso{
 
     //Atributos
-    nomeCurso: string;
-    valorCurso: number;
-    idCurso?: number
+    nomeCurso!: string | null;
+    valorCurso!: number | null;
+    idCurso!: number
     
 }
