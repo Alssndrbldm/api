@@ -41,12 +41,32 @@ export class CursoService {
       
       this.vetor.push(res['cursos']);
       return this.vetor;
-    }))
+    }));
   } 
 
   //Remover curso
   removerCurso(c: Curso): Observable<any> {
     const params = new HttpParams().set("idCurso", c.idCurso?.toString());
     return this.http.delete(this.url+'excluir.php', {params: params})
+  }
+
+  //Atualizar curso
+  atualizarCurso(c:Curso): Observable<Curso[]> {
+    //Executa a alteração via URL
+    return this.http.put(this.url+'alterar.php', {cursos: c})
+    //Percorrer o vetor para saber qual é o id do curso alterado
+    .pipe(map((res) => {
+      const cursoAlterado = this.vetor.find((item) => {
+        return +item['idCurso'] === +[];
+      });
+      //Altera o valor do vetor local
+      if(cursoAlterado){
+        cursoAlterado['nomeCurso'] = c['nomeCurso'];
+        cursoAlterado['valorCurso'] = c['valorCurso'];
+      }
+      //Retorno
+      return this.vetor;
+
+    }));
   }
 }

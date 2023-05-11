@@ -49,9 +49,8 @@ export class CursoComponent implements OnInit {
         this.vetor = res;
 
         //Limpar os atributos
-        this.curso.nomeCurso = "";
-        this.curso.valorCurso = 0;
-
+        this.curso.nomeCurso = null;
+        this.curso.valorCurso = null;
         //Atualizar listagem
         this.selecao();
       }
@@ -60,8 +59,19 @@ export class CursoComponent implements OnInit {
   }
 
   //Alterar
-  alterar(): void {
-    alert("Alterar");
+  alterar() {
+    this.curso_servico.atualizarCurso(this.curso).subscribe(
+      (res) => {
+        //Atualizar vetor
+        this.vetor = res;
+        //Limpar os valores do objeto
+        this.curso.nomeCurso = null;
+        this.curso.valorCurso = null;
+
+        //Atualizar listagem
+        this.selecao();
+      }
+    )
   }
 
   //Remover
